@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>ClaimTrail | Recover the SPA credits you already earned</title>
+<meta name="description" content="ClaimTrail finds SPA, ship-and-debit and rebate credits that independent distributors earned but never received. You only pay when money comes back.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EAF0EA;
+    --paper-deep: #DCE6DD;
+    --ink: #172437;
+    --ink-soft: #46546A;
+    --rule: #B9C8BC;
+    --stamp: #A8352B;
+    --credit: #22684A;
+    --flag: #F2D36B;
+    --white: #FBFDFB;
+    --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+    --body: "Public Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+    --row-line: #E3EAE4;
+    --btn-bg: #172437; --btn-fg: #FBFDFB; --btn-hover: #22344F;
+    --panel-bg: #172437; --panel-fg: #FBFDFB; --panel-soft: #C7D2DF;
+    --flag-bg: rgba(242,211,107,.45);
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+      --paper: #13211C; --paper-deep: #0B1512; --white: #1B2D27;
+      --ink: #EAF2EC; --ink-soft: #AFC2B6; --rule: #37503F;
+      --stamp: #F08A7E; --credit: #6BD4A0; --flag: #F2D36B;
+      --row-line: #2A4036;
+      --btn-bg: #6BD4A0; --btn-fg: #0B1512; --btn-hover: #8BE3B6;
+      --panel-bg: #223A31; --panel-fg: #F4F8F5; --panel-soft: #C3D4C9;
+      --flag-bg: rgba(242,211,107,.16);
+      color-scheme: dark;
+    }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #13211C; --paper-deep: #0B1512; --white: #1B2D27;
+      --ink: #EAF2EC; --ink-soft: #AFC2B6; --rule: #37503F;
+      --stamp: #F08A7E; --credit: #6BD4A0; --flag: #F2D36B;
+      --row-line: #2A4036;
+      --btn-bg: #6BD4A0; --btn-fg: #0B1512; --btn-hover: #8BE3B6;
+      --panel-bg: #223A31; --panel-fg: #F4F8F5; --panel-soft: #C3D4C9;
+      --flag-bg: rgba(242,211,107,.16);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header.top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0;
+  }
+  .brand {
+    font-family: var(--display); font-weight: 800; font-stretch: 112%;
+    font-size: 1.35rem; letter-spacing: -0.01em; text-decoration: none;
+  }
+  .brand span { display: inline-block; width: 10px; height: 10px; background: var(--credit); border-radius: 50%; margin-left: 4px; }
+  .top a.small { font-weight: 600; font-size: 0.95rem; }
+
+  .hero {
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px;
+    align-items: start; padding: 48px 0 88px;
+  }
+  h1 {
+    font-family: var(--display); font-weight: 800; font-stretch: 78%;
+    font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 0.98;
+    letter-spacing: -0.015em; margin: 0 0 24px; max-width: 12ch;
+  }
+  .lede { font-size: 1.2rem; color: var(--ink-soft); max-width: 34em; margin: 0 0 32px; }
+  .btn {
+    display: inline-block; background: var(--btn-bg); color: var(--btn-fg);
+    font-weight: 600; text-decoration: none; padding: 15px 24px; border-radius: 4px;
+  }
+  .btn:hover { background: var(--btn-hover); }
+  .fine { font-size: 0.92rem; color: var(--ink-soft); margin-top: 14px; }
+
+  /* The trail: the one memorable element */
+  .trail {
+    background: var(--white); border: 1px solid var(--rule);
+    padding: 26px 26px 18px; position: relative; margin: 0;
+    box-shadow: 8px 8px 0 var(--paper-deep);
+  }
+  .trail-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 6px;
+  }
+  .trail-head strong { font-family: var(--display); font-stretch: 100%; font-size: 1.05rem; }
+  .trail-head em { font-style: normal; font-size: 0.85rem; color: var(--ink-soft); }
+  .trail ol { list-style: none; margin: 0; padding: 0; position: relative; }
+  .trail ol::before {
+    content: ""; position: absolute; left: 7px; top: 14px; bottom: 22px;
+    border-left: 2px dashed var(--rule);
+  }
+  .trail li {
+    display: grid; grid-template-columns: 26px 1fr auto; gap: 10px;
+    padding: 11px 0; border-bottom: 1px solid var(--row-line); align-items: start;
+  }
+  .trail li:last-child { border-bottom: 0; }
+  .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--white); border: 2px solid var(--ink-soft); margin-top: 4px; position: relative; z-index: 1; }
+  .step { font-weight: 500; }
+  .step small { display: block; color: var(--ink-soft); font-size: 0.85rem; font-weight: 400; }
+  .amt { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  li.rejected { position: relative; }
+  li.rejected .dot { border-color: var(--stamp); background: var(--stamp); }
+  li.rejected .step { color: var(--stamp); }
+  li.silent .step { color: var(--ink-soft); font-style: italic; }
+  li.flagged { background: linear-gradient(transparent 8%, var(--flag-bg) 8%, var(--flag-bg) 92%, transparent 92%); margin: 0 -10px; padding-left: 10px; padding-right: 10px; }
+  li.flagged .dot { border-color: var(--ink); background: var(--flag); }
+  body { -webkit-font-smoothing: antialiased; }
+  li.paid .dot { border-color: var(--credit); background: var(--credit); }
+  li.paid .amt { color: var(--credit); }
+  .stamp {
+    position: absolute; right: 56px; top: 50%; margin-top: -16px; transform: rotate(-9deg);
+    border: 3px solid var(--stamp); color: var(--stamp); border-radius: 4px;
+    font-family: var(--display); font-weight: 800; font-stretch: 90%;
+    font-size: 1.05rem; padding: 2px 10px; opacity: .85; pointer-events: none;
+  }
+  .trail-note { font-size: 0.8rem; color: var(--ink-soft); margin: 10px 0 0; }
+
+  section { padding: 80px 0; border-top: 1px solid var(--rule); }
+  h2 {
+    font-family: var(--display); font-weight: 750; font-stretch: 88%;
+    font-size: clamp(1.9rem, 3.6vw, 2.7rem); line-height: 1.05;
+    margin: 0 0 18px; max-width: 20ch; letter-spacing: -0.01em;
+  }
+  .intro { color: var(--ink-soft); max-width: 36em; margin: 0 0 40px; }
+
+  .leaks { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 48px; margin: 0; padding: 0; list-style: none; }
+  .leaks li { border-top: 2px solid var(--ink); padding: 16px 0 28px; }
+  .leaks h3 { font-family: var(--display); font-stretch: 100%; font-size: 1.2rem; margin: 0 0 6px; }
+  .leaks p { margin: 0; color: var(--ink-soft); }
+
+  .steps { counter-reset: s; list-style: none; margin: 0; padding: 0; max-width: 760px; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 64px 1fr; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+  .steps li::before {
+    content: counter(s); font-family: var(--display); font-weight: 800; font-stretch: 75%;
+    font-size: 2.6rem; line-height: 1; color: var(--credit);
+  }
+  .steps h3 { margin: 0 0 4px; font-size: 1.1rem; }
+  .steps p { margin: 0; color: var(--ink-soft); }
+
+  .terms { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .price {
+    background: var(--panel-bg); color: var(--panel-fg); padding: 34px; border-radius: 4px;
+  }
+  .price h3 { font-family: var(--display); font-stretch: 85%; font-size: 1.9rem; line-height: 1.1; margin: 0 0 18px; }
+  .price dl { margin: 0; }
+  .price dt { font-weight: 600; margin-top: 16px; }
+  .price dd { margin: 2px 0 0; color: var(--panel-soft); }
+  .trust ul { margin: 0; padding: 0 0 0 20px; }
+  .trust li { margin-bottom: 12px; }
+
+  .about p { max-width: 38em; }
+
+  .closing { text-align: left; padding-bottom: 96px; }
+  footer { border-top: 1px solid var(--rule); padding: 24px 0 40px; font-size: 0.9rem; color: var(--ink-soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  @media (max-width: 860px) {
+    .hero, .terms { grid-template-columns: 1fr; gap: 40px; }
+    .hero { padding-top: 24px; }
+    section { padding: 60px 0; }
+  }
+  @media (max-width: 420px) {
+    .trail { padding: 20px 16px 14px; }
+    .stamp { display: none; }
+    .top a.small { font-size: 0.85rem; }
+    .trail li { grid-template-columns: 22px 1fr auto; }
+    .amt { font-size: 0.92rem; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .stamp { animation: stamp .5s cubic-bezier(.2,.9,.3,1.3) .6s both; }
+    @keyframes stamp { from { opacity: 0; transform: rotate(-9deg) scale(1.8); } to { opacity: .85; transform: rotate(-9deg) scale(1); } }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">ClaimTrail<span aria-hidden="true"></span></a>
+    <a class="small" href="mailto:tejas@getclaimtrail.com?subject=Free%20claim%20check">tejas@getclaimtrail.com</a>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1>Get paid for the SPA credits you already earned.</h1>
+      <p class="lede">Independent distributors lose money on claims that were never filed, rejected and forgotten, or short-paid. ClaimTrail finds the credits you can still recover and hands your team everything needed to claim them. You only pay when the money comes back.</p>
+      <a class="btn" href="https://calendly.com/tejas-getclaimtrail/new-meeting" target="_blank" rel="noopener">Book a free claim check</a>
+      <p class="fine">One manufacturer, last 90 days, results within a week. No cost.</p>
+    </div>
+
+    <figure class="trail" aria-label="Example of a rejected claim being recovered">
+      <div class="trail-head"><strong>Claim 48213</strong><em>Illustrative example</em></div>
+      <ol>
+        <li><span class="dot"></span><span class="step">Order ships at SPA price<small>Quote attached, customer approved</small></span><span class="amt"></span></li>
+        <li><span class="dot"></span><span class="step">Claim filed with manufacturer<small>Day 25</small></span><span class="amt">$1,860</span></li>
+        <li class="rejected"><span class="dot"></span><span class="step">Rejected<small>Contract number did not match</small></span><span class="amt">$0</span><span class="stamp" aria-hidden="true">Rejected</span></li>
+        <li class="silent"><span class="dot"></span><span class="step">Sits in a spreadsheet<small>Nobody has time to chase it</small></span><span class="amt"></span></li>
+        <li class="flagged"><span class="dot"></span><span class="step">ClaimTrail flags it<small>Correct contract found, 41 days left to refile</small></span><span class="amt"></span></li>
+        <li class="paid"><span class="dot"></span><span class="step">Corrected, refiled, credited<small>Your team submits, you keep the credit</small></span><span class="amt">+$1,860</span></li>
+      </ol>
+      <p class="trail-note">Figures are for illustration only.</p>
+    </figure>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Where the money slips away</h2>
+    <p class="intro">Every manufacturer has its own rules, windows and forms. When one person handles claims for a dozen of them alongside everything else, some credits never come back.</p>
+    <ul class="leaks">
+      <li><h3>Claims never filed</h3><p>Eligible sales that didn't match an agreement in the system, so no claim went out.</p></li>
+      <li><h3>Rejections nobody chased</h3><p>A wrong contract number or missing detail, and the claim quietly dies.</p></li>
+      <li><h3>Short payments</h3><p>Credits that came back smaller than what was claimed, without anyone noticing.</p></li>
+      <li><h3>Wrong price on the invoice</h3><p>Orders billed at list price because a quote number was missing from the PO.</p></li>
+      <li><h3>Expired agreements</h3><p>Sales made after an SPA lapsed or before it was loaded, and never sorted out.</p></li>
+      <li><h3>Missed windows</h3><p>Claims that were valid but filed too late for the manufacturer to accept.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>How a claim check works</h2>
+    <p class="intro">We start small, with one manufacturer, so you can see results before committing to anything.</p>
+    <ol class="steps">
+      <li><div><h3>You send a small sample</h3><p>About 90 days of claims, rejections and credits for one manufacturer, plus the matching agreements. Customer names can be removed first.</p></div></li>
+      <li><div><h3>We match every eligible sale</h3><p>Each sale is checked against your agreements, what you claimed, and what was actually paid.</p></div></li>
+      <li><div><h3>You get a recovery list</h3><p>Every credit you can still claim, with the supporting evidence and the filing deadline for each one.</p></div></li>
+      <li><div><h3>Your team files the claims</h3><p>You stay in control of your manufacturer relationships. We never log into your portals.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap terms">
+    <div class="price">
+      <h3>No recovery, no fee.</h3>
+      <dl>
+        <dt>First claim check</dt>
+        <dd>Free, for one manufacturer.</dd>
+        <dt>Recovery</dt>
+        <dd>A percentage of the credits that actually come back. Agreed in writing before any work starts.</dd>
+        <dt>Ongoing monitoring</dt>
+        <dd>Available once the check has proven its value, so new leaks get caught every month.</dd>
+      </dl>
+    </div>
+    <div class="trust">
+      <h2>Your data stays under your control</h2>
+      <ul>
+        <li>We sign an NDA before you share anything.</li>
+        <li>Customer names can be removed or replaced with codes.</li>
+        <li>We can work over a screen share if you'd rather not send files.</li>
+        <li>We never access your ERP or manufacturer portals.</li>
+        <li>Your files are deleted when the engagement ends.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <h2>Who's behind ClaimTrail</h2>
+    <p>ClaimTrail is run by Tejas Chandan, who works in quantitative analytics and has spent years building data and AI tools for finance teams. He holds CFA Level I and works remotely with distributors across the US, Canada, the UK and Australia.</p>
+    <p>Every finding is checked by a person before it reaches you. AI does the heavy matching; judgment stays human.</p>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <h2>Find out what's still recoverable</h2>
+    <p class="intro">Pick a time for a short intro call to see if a claim check makes sense for you. Prefer email? Write to tejas@getclaimtrail.com.</p>
+    <a class="btn" href="https://calendly.com/tejas-getclaimtrail/new-meeting" target="_blank" rel="noopener">Book a free claim check</a>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>&copy; 2026 ClaimTrail</span>
+    <a href="mailto:tejas@getclaimtrail.com">tejas@getclaimtrail.com</a>
+  </footer>
+</div>
+</body>
+</html>
